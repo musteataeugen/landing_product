@@ -1,0 +1,11 @@
+{
+    "name": "Eloquent Javascript 3rd Edition A Modern Introduction Paperback",
+    "subtitle": "Being clear and accurate about your item's condition lets the buyer know whether they're getting something new, used, or something in between.On the listing form, you can choose from one of several preset item condition options,and the seller will be shown the price which vary depending on the category that you list your item in.",
+    "description": "Building rich JavaScript applications that bring the desktop experience to the Web is now possible,thanks to powerful JavaScript engines and the CSS3 and HTML5 specifications. The key is moving state from the server to the client side, but that's no simple task. This book takes you through all the steps necessary to create state-of-the-art JavaScript applications, including structure, templating, frameworks,communicating with the server, and many other issues. Through practical, tutorial-based explanations,this book will help you learn how to create JavaScript applications that offer a much more responsive and improved experience.",
+    "image": "/images/product.jpg",
+    "tags": [ "books", "JS", "design", "learning", "education", "2018", "programming", "IT"],
+    "price": {
+        "Amount": 10,
+        "Currency": "EUR"
+    }
+}
