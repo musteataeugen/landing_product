@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
   if (routes[req.url]) {
     fs.readFile(routes[req.url], (err, data) => {
       //1. react only for the main page template
-      if (routes[req.url] == "index.html") {
+      if (routes[req.url] == "index.html") {  
 
         //2.load the product from json
         fs.readFile("data/product.json", (err, dataJSON) => {
@@ -40,6 +40,8 @@ const server = http.createServer((req, res) => {
           data = data.replace("{priceAmount}", productData["price"]["Amount"]);
           data = data.replace("{priceCurrency}", productData["price"]["Currency"]);
 
+         data = data.replace("{tags}", productData.tags.map(tag => `<li>${tag}</li>`).join(""));                  
+        
           res.write(data)
           res.end()
         })
@@ -48,29 +50,9 @@ const server = http.createServer((req, res) => {
         res.write(data)
         res.end()
       }
-    
-    })
-  }
-  // 1 varianta
-  // if (req.url == "/") { //if (req.url == "/index.html") {
 
-  // // static file serving
-  // fs.readFile("index.html", (err, data) => {
-  //   res.write(data)
-  //   res.end()    
-  // }) 
-  // } else if (req.url == "/style.css") {  
-  // fs.readFile("style.css", (err, data) => {
-  //   res.write(data)
-  //   res.end()    
-  // })    
-  // } else if (req.url == "/favicon/black_friday.png") {  
-  // fs.readFile("favicon/black_friday.png", (err, data) => {
-  //   res.write(data)
-  //   res.end()    
-  // })
-  // }
-  else {
+    })
+  }  else {
     res.write("Not found")
     res.end()
   }
