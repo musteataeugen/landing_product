@@ -6,6 +6,7 @@ import fs from "node:fs";
 const routes = {
   "/": "index.html",
   "/style.css": "style.css",
+  "/app.js": "js/app.js",
   "/favicon/black_friday.png": "favicon/black_friday.png",
   "/images/product.jpg": "images/product.jpg"
 }
@@ -18,6 +19,17 @@ const server = http.createServer((req, res) => {
       res.end()
     })
   } else if (req.url == "/api/product") {
+    fs.readFile("data/product.json", (err, dataJSON) => {
+      res.write(dataJSON)
+      res.end()
+    })
+   
+  } else if (req.url == "/api/order") {
+    fs.writeFile("data/order.json","{}", (err) => {
+      res.write(JSON.stringify({
+        message: "Order placed!"}))
+      res.end()
+    })
    
   }
    else  {
