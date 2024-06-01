@@ -3,7 +3,7 @@ body {
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 20px;
-    
+    margin: 25px 0;
 }
 
 button {
@@ -12,4 +12,29 @@ button {
     font-size: 20px;
     padding: 10px;
     border-radius: 10px;
+}
+
+button:hover {
+    background-color: white;
+    color: darkgoldenrod;
+}
+
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+}
+
+input:focus {
+    place-content: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 0 auto;
+  
+    gap: 20px;
 }

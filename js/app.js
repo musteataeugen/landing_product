@@ -64,7 +64,41 @@ const orderProduct = () => {
 
 let form = document.createElement('form')
 let input = document.createElement('input')
-input.placeholder = 'enter your email...'
+let label = document.createElement('label')
+label.textContent = 'Enter your email'
+form.append(label)
+form.append(input)
+
+input = document.createElement('input')
+label = document.createElement('label')
+label.textContent = 'Enter quantity'
+input.type = 'number'
+input.min = 1
+form.append(label)
+form.append(input)
+
+input = document.createElement('input')
+label = document.createElement('label')
+label.textContent = 'Enter your phone'
+form.append(label)
+form.append(input)
+
+input = document.createElement('input')
+label = document.createElement('label')
+label.textContent = 'Enter your name'
+form.append(label)
+form.append(input)
+
+input = document.createElement('input')
+label = document.createElement('label')
+label.textContent = 'Enter your address'
+form.append(label)
+form.append(input)
+
+input = document.createElement('input')
+label = document.createElement('label')
+label.textContent = 'Enter your city'
+form.append(label)
 form.append(input)
 
 let button = document.createElement('button')
