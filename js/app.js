@@ -36,20 +36,20 @@ fetch('/api/product')
     document.body.appendChild(p)
 
     let button = document.createElement('button')
-    button.textContent = 'ORDER'
+    button.textContent = 'BUY'
     document.body.appendChild(button)
 
 
 
    //When USER clics - Order
-    button.addEventListener('click', orderProduct )
-    //When USER clics - Order
+    button.addEventListener('click',() => {orderProduct(json.id)})
+    
 
     //HW2*:what if the endpoint would offer XML data
 
 })
 
-const orderProduct = () => {
+const orderProduct = (productId) => {
     //GET -default
 //     fetch('/api/order',{
 //         method: 'POST'
@@ -64,40 +64,53 @@ const orderProduct = () => {
 
 let form = document.createElement('form')
 let input = document.createElement('input')
+input.id = 'orderEmail'
 let label = document.createElement('label')
 label.textContent = 'Enter your email'
 form.append(label)
 form.append(input)
 
 input = document.createElement('input')
+input.type = 'hidden'
+input.value = productId
+input.id = 'productId'
+form.append(input)
+
+input = document.createElement('input')
 label = document.createElement('label')
 label.textContent = 'Enter quantity'
 input.type = 'number'
+input.defaultValue = 1
 input.min = 1
+input.id = 'quantity'
 form.append(label)
 form.append(input)
 
 input = document.createElement('input')
 label = document.createElement('label')
 label.textContent = 'Enter your phone'
+input.id = 'phone'
 form.append(label)
 form.append(input)
 
 input = document.createElement('input')
 label = document.createElement('label')
 label.textContent = 'Enter your name'
+input.id = 'name'
 form.append(label)
 form.append(input)
 
 input = document.createElement('input')
 label = document.createElement('label')
 label.textContent = 'Enter your address'
+input.id = 'address'
 form.append(label)
 form.append(input)
 
 input = document.createElement('input')
 label = document.createElement('label')
 label.textContent = 'Enter your city'
+input.id = 'city'
 form.append(label)
 form.append(input)
 
@@ -105,21 +118,45 @@ let button = document.createElement('button')
 button.textContent = 'CONFIRM ORDER'
 form.append(button)
 
-button.addEventListener('click', () => {
-    fetch('/api/order', {
-        method: 'POST'       
-    })
-    .then(response => response.json())
-    .then(json =>{
-        alert(json.message)
-    })
-    .catch(err => {
-        alert("Error")
-    })
+button.addEventListener('click', (e) => {
+    e.preventDefault()
+
+    //HW1: validate so the user doesn't leave empty fields
+
+    form.addEventListener('click', (e) => {
+        e.preventDefault()
+    
+        let email = document.getElementById('orderEmail').value
+        let quantity = document.getElementById('quantity').value
+        let phone = document.getElementById('phone').value
+        let name = document.getElementById('name').value
+        let address = document.getElementById('address').value
+        let city = document.getElementById('city').value
+    
+        if (!email || !quantity || !phone || !name || !address || !city) {
+            alert('Please fill in all fields')
+            return
+        }    
+        fetch('/api/order', {
+            method: 'POST',
+            body: JSON.stringify({
+                productId: document.getElementById('productId').value,
+                quantity: quantity,
+                email: email,
+                phone: phone,
+                name: name,
+                address: address,
+                city: city
+            })
+        })
+        .then(response => response.json())
+        .then(json => {
+            e.target.innerHTML = json.message
+        })
+        .catch(err => {
+            alert("Error")
+        })
+    }) 
 })
-
-
-document.body.replaceChild(form,document.body.lastElementChild)
-   
-
+document.body.replaceChild(form,document.body.lastElementChild)  
 }

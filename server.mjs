@@ -23,16 +23,24 @@ const server = http.createServer((req, res) => {
       res.write(dataJSON)
       res.end()
     })
-   
+
   } else if (req.url == "/api/order") {
-    fs.writeFile("data/order.json","{}", (err) => {
-      res.write(JSON.stringify({
-        message: "Order placed!"}))
-      res.end()
+    //extract data from request body
+    let body = ''
+    req.on('data', chunk => {
+      body += chunk
     })
-   
-  }
-   else  {
+
+    req.on('end', () => {
+      let data = JSON.parse(body)
+      fs.writeFile("data/order.json", JSON.stringify(data), (err) => {
+        res.write(JSON.stringify({
+          message: "Order placed!"
+        }))
+        res.end()
+      })
+    })
+  } else {
     res.write("Not found")
     res.end()
   }
