@@ -123,8 +123,7 @@ button.addEventListener('click', (e) => {
 
     //HW1: validate so the user doesn't leave empty fields
 
-    form.addEventListener('click', (e) => {
-        
+    form.addEventListener('click', (e) => {        
         e.preventDefault()
     
         let email = document.getElementById('orderEmail').value
