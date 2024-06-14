@@ -10,9 +10,15 @@ body {
 #pageContent {
     display: block;
     gap: 30px;
-    width: 50%;
+    max-width: 80%;
+    width: auto;
     margin: 0 auto;
     position: relative;
+}
+
+img{
+    max-width: 100%;
+    height: auto;
 }
 
 button {
@@ -76,12 +82,5 @@ form button {
 
 .buyButton {
     position: absolute;
-    right: 50%;
+    right: 0;
 }
-/* 
-.orderInfoButton {
-    display: flex;
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-} */
