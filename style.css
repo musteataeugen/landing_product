@@ -4,9 +4,19 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 20px;
     margin: 25px 0;
+
+}
+
+#pageContent {
+    display: block;
+    gap: 30px;
+    width: 50%;
+    margin: 0 auto;
+    position: relative;
 }
 
 button {
+    display: flex;   
     background-color:darkgoldenrod;
     color: white;
     font-size: 20px;
@@ -43,3 +53,35 @@ form button {
     width: 50%;
     margin: 0 auto;
 }
+
+.resultInfo {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.nextButton {   
+    display: flex;
+    position: absolute;
+    right: 0;    
+}
+
+.prevButton {
+    display: flex;
+    position: absolute;
+    left: 0;
+}
+
+.buyButton {
+    position: absolute;
+    right: 50%;
+}
+/* 
+.orderInfoButton {
+    display: flex;
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+} */

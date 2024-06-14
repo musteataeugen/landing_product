@@ -1,162 +1,261 @@
 // client side javascript
 
+let products = []
+let currentProductIndex = 0
+
+const pageContent = document.querySelector('#pageContent')
+
 fetch('/api/product')
-.then(response => response.json())
-.then(json =>{
+    .then(response => response.json())
+    .then(productData => {
+        products = productData
+        renderProduct(currentProductIndex)
+    })
+
+const renderProduct = (index) => {
+
+    pageContent.innerHTML = ''
+
+    let product = products[index];
+
     let h1 = document.createElement('h1')
-    h1.textContent = json.name
-    document.body.appendChild(h1)
+    h1.textContent = product.name
+    pageContent.append(h1)
     // HW1: finish the templateusing DOM comands
     let img = document.createElement('img')
-    img.src = json.image
-    document.body.appendChild(img)
+    img.src = product.image
+    pageContent.append(img)
 
     let h2 = document.createElement('h2')
-    h2.textContent = json.subtitle
-    document.body.appendChild(h2)
+    h2.textContent = product.subtitle
+    pageContent.append(h2)
 
     let h4 = document.createElement('h4')
-    h4.textContent = json.description
-    document.body.appendChild(h4)
+    h4.textContent = product.description
+    pageContent.append(h4)
 
     let ul = document.createElement('ul')
-    json.tags.forEach(tag => {
+    product.tags.forEach(tag => {
         let li = document.createElement('li')
         li.textContent = tag
-        ul.appendChild(li)
+        ul.append(li)
     })
-    document.body.appendChild(ul)
+    pageContent.append(ul)
 
     let p = document.createElement('p')
-    p.textContent = json.price.Amount        
-    document.body.appendChild(p) 
+    p.textContent = product.price.Amount
+    pageContent.append(p)
 
     p = document.createElement('p')
-    p.textContent = json.price.Currency
-    document.body.appendChild(p)
+    p.textContent = product.price.Currency
+    pageContent.append(p)
+
+    let nextButton = document.createElement('button')
+    nextButton.classList.add('nextButton')
+    nextButton.textContent = 'NEXT'
+    pageContent.append(nextButton)
+
+    //HW1: make the previous button
+    let previousButton = document.createElement('button')
+    previousButton.classList.add('previousButton')
+    previousButton.textContent = 'PREVIOUS'
+    pageContent.append(previousButton)
+
+    //HW2: put the limit
+    nextButton.addEventListener('click', () => {
+        if (currentProductIndex < products.length - 1) {
+            currentProductIndex++;
+        } else {
+            currentProductIndex = 0
+        }
+        renderProduct(currentProductIndex)
+    })
+
+    previousButton.addEventListener('click', () => {
+        if (currentProductIndex > 0) {
+            currentProductIndex--;
+        } else {
+            currentProductIndex = products.length - 1
+        }
+        renderProduct(currentProductIndex)
+    })
 
     let button = document.createElement('button')
+    button.classList.add('buyButton')
     button.textContent = 'BUY'
-    document.body.appendChild(button)
+    pageContent.append(button)
 
 
 
-   //When USER clics - Order
-    button.addEventListener('click',() => {orderProduct(json.id)})
-    
+    //When USER clics - Order
+    button.addEventListener('click', () => { orderProduct(product.id) })
 
-    //HW2*:what if the endpoint would offer XML data
+    let buttonOrderInfo = document.createElement('button')
+    buttonOrderInfo.classList.add('orderInfoButton')
+    buttonOrderInfo.textContent = 'ORDER INFO'
+    pageContent.append(buttonOrderInfo)
 
-})
+//----------------------------------------------------------------
+  //HW5: rewrite the logic using DOM elements
+    buttonOrderInfo.addEventListener('click', () => {
+        let formresult = document.createElement('form');
+        let orderId = document.createElement('input');       
+        orderId.placeholder = 'Order ID';
+        formresult.append(orderId);
+      
+        let pin = document.createElement('input');
+        pin.type = 'password';
+        pin.placeholder = 'Enter PIN';
+        formresult.append(pin);        
+      
+        let submitButton = document.createElement('button');
+        submitButton.textContent = 'Submit';
+        formresult.append(submitButton);
 
-const orderProduct = (productId) => {
-    //GET -default
-//     fetch('/api/order',{
-//         method: 'POST'
-//     })
-//    .then(response => response.json())
-//    .then(json =>{
-//        alert(json.message)
-//    })
-//    .catch(error => {
-//        alert(error)
-//    })
+        pageContent.append(formresult);
+      
+        submitButton.addEventListener('click', (e) => {
+          e.preventDefault();        
+      
+          let orderIdValue = orderId.value;
+          let pinValue = pin.value;
+      
+          if (!orderIdValue || !pinValue) {
+            alert('Please fill in all fields');
+            return;
+          }
+      
+          fetch(`/api/orderinfo?order_id=${orderIdValue}&pin=${pinValue}`)
+            .then(response => response.json())
+            .then(json => {
+                
+                formresult.innerHTML = '';
 
-let form = document.createElement('form')
-let input = document.createElement('input')
-input.id = 'orderEmail'
-let label = document.createElement('label')
-label.textContent = 'Enter your email'
-form.append(label)
-form.append(input)
-
-input = document.createElement('input')
-input.type = 'hidden'
-input.value = productId
-input.id = 'productId'
-form.append(input)
-
-input = document.createElement('input')
-label = document.createElement('label')
-label.textContent = 'Enter quantity'
-input.type = 'number'
-input.defaultValue = 1
-input.min = 1
-input.id = 'quantity'
-form.append(label)
-form.append(input)
-
-input = document.createElement('input')
-label = document.createElement('label')
-label.textContent = 'Enter your phone'
-input.id = 'phone'
-form.append(label)
-form.append(input)
-
-input = document.createElement('input')
-label = document.createElement('label')
-label.textContent = 'Enter your name'
-input.id = 'name'
-form.append(label)
-form.append(input)
-
-input = document.createElement('input')
-label = document.createElement('label')
-label.textContent = 'Enter your address'
-input.id = 'address'
-form.append(label)
-form.append(input)
-
-input = document.createElement('input')
-label = document.createElement('label')
-label.textContent = 'Enter your city'
-input.id = 'city'
-form.append(label)
-form.append(input)
-
-let button = document.createElement('button')
-button.textContent = 'CONFIRM ORDER'
-form.append(button)
-
-button.addEventListener('click', (e) => {
-    e.preventDefault()
-
-    //HW1: validate so the user doesn't leave empty fields
-
-    form.addEventListener('click', (e) => {        
-        e.preventDefault()
-    
-        let email = document.getElementById('orderEmail').value
-        let quantity = document.getElementById('quantity').value
-        let phone = document.getElementById('phone').value
-        let name = document.getElementById('name').value
-        let address = document.getElementById('address').value
-        let city = document.getElementById('city').value
-    
-        if (!email || !quantity || !phone || !name || !address || !city) {
-            alert('Please fill in all fields')
-            return
-        }    
-        fetch('/api/order', {
-            method: 'POST',
-            body: JSON.stringify({
-                productId: document.getElementById('productId').value,
-                quantity: quantity,
-                email: email,
-                phone: phone,
-                name: name,
-                address: address,
-                city: city
+                let resultInfo = document.createElement('div');
+                resultInfo.classList.add('resultInfo');
+                let productIdResult = document.createElement('p');
+                let quantityResult = document.createElement('p');
+                productIdResult.textContent = `Product ID: ${json.productId}`;
+                quantityResult.textContent = `Quantity: ${json.quantity}`;
+                resultInfo.append(productIdResult);
+                resultInfo.append(quantityResult);
+                pageContent.append(resultInfo);                   
+                
             })
+            .catch(err => {
+              alert("Invalid order ID or PIN");
+            });            
+        });
+      });
+
+      //---------------------------------------------------  
+}
+const orderProduct = (productId) => {
+
+    let form = document.createElement('form')
+    let input = document.createElement('input')
+    input.id = 'orderEmail'
+    let label = document.createElement('label')
+    label.textContent = 'Enter your email'
+    form.append(label)
+    form.append(input)
+
+    input = document.createElement('input')
+    input.type = 'hidden'
+    input.value = productId
+    input.id = 'productId'
+    form.append(input)
+
+    input = document.createElement('input')
+    label = document.createElement('label')
+    label.textContent = 'Enter quantity'
+    input.type = 'number'
+    input.defaultValue = 1  
+    input.min = 1
+    input.max = 10
+    input.id = 'quantity'
+    form.append(label)
+    form.append(input)
+
+    input = document.createElement('input')
+    label = document.createElement('label')
+    label.textContent = 'Enter your phone'
+    input.id = 'phone'
+    form.append(label)
+    form.append(input)
+
+    input = document.createElement('input')
+    label = document.createElement('label')
+    label.textContent = 'Enter your name'
+    input.id = 'name'
+    form.append(label)
+    form.append(input)
+
+    input = document.createElement('input')
+    label = document.createElement('label')
+    label.textContent = 'Enter your address'
+    input.id = 'address'
+    form.append(label)
+    form.append(input)
+
+    input = document.createElement('input')
+    label = document.createElement('label')
+    label.textContent = 'Enter your city'
+    input.id = 'city'
+    form.append(label)
+    form.append(input)
+
+    input = document.createElement('input')
+    label = document.createElement('label')
+    label.textContent = 'Enter your PIN'
+    input.type = 'password'
+    input.id = 'pin'
+    form.append(label)
+    form.append(input)
+
+    let button = document.createElement('button')
+    button.textContent = 'CONFIRM ORDER'
+    form.append(button)
+
+    button.addEventListener('click', (e) => {
+        e.preventDefault()      
+
+        form.addEventListener('click', (e) => {
+            e.preventDefault()
+
+            let email = document.getElementById('orderEmail').value
+            let quantity = document.getElementById('quantity').value
+            let phone = document.getElementById('phone').value
+            let name = document.getElementById('name').value
+            let address = document.getElementById('address').value
+            let city = document.getElementById('city').value
+            let pin = document.getElementById('pin').value
+
+            if (!email || !quantity || !phone || !name || !address || !city) {
+                alert('Please fill in all fields')
+                return
+            }
+            fetch('/api/order', {
+                method: 'POST',
+                body: JSON.stringify({
+                    productId: document.getElementById('productId').value,
+                    quantity: quantity,
+                    email: email,
+                    phone: phone,
+                    name: name,
+                    address: address,
+                    city: city,
+                    pin: pin
+                })
+            })
+                .then(response => response.json())
+                .then(json => {
+                    e.target.innerHTML = json.message
+                })
+                .catch(err => {
+                    alert("Error")
+                })
         })
-        .then(response => response.json())
-        .then(json => {
-            e.target.innerHTML = json.message
-        })
-        .catch(err => {
-            alert("Error")
-        })
-    }) 
-})
-document.body.replaceChild(form,document.body.lastElementChild)  
+    })
+    pageContent.replaceChild(form, pageContent.lastElementChild)
 }
