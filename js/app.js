@@ -139,8 +139,7 @@ const renderProduct = (index) => {
                 quantityResult.textContent = `Quantity: ${json.quantity}`;
                 resultInfo.append(productIdResult);
                 resultInfo.append(quantityResult);
-                pageContent.append(resultInfo);                   
-                
+                pageContent.append(resultInfo);                          
             })
             .catch(err => {
               alert("Invalid order ID or PIN");
