@@ -34,21 +34,17 @@ const renderProduct = (index) => {
     h4.textContent = product.description
     pageContent.append(h4)
 
-    let ul = document.createElement('ul')
-    product.tags.forEach(tag => {
-        let li = document.createElement('li')
-        li.textContent = tag
-        ul.append(li)
-    })
-    pageContent.append(ul)
+    // let ul = document.createElement('ul')
+    // product.tags.forEach(tag => {
+    //     let li = document.createElement('li')
+    //     li.textContent = tag
+    //     ul.append(li)
+    // })
+    // pageContent.append(ul)
 
     let p = document.createElement('p')
-    p.textContent = product.price.Amount
-    pageContent.append(p)
-
-    p = document.createElement('p')
-    p.textContent = product.price.Currency
-    pageContent.append(p)
+    p.textContent = `Price: ${product.price_amount} ${product.price_currency}`
+    pageContent.append(p)    
 
     let nextButton = document.createElement('button')
     nextButton.classList.add('nextButton')
@@ -131,12 +127,19 @@ const renderProduct = (index) => {
                 
                 formresult.innerHTML = '';
 
+                let orderInfo = json[0];
+
                 let resultInfo = document.createElement('div');
                 resultInfo.classList.add('resultInfo');
-                let productIdResult = document.createElement('p');
+                let orderNameResult = document.createElement('p');
+                let productIdResult = document.createElement('p');                
                 let quantityResult = document.createElement('p');
-                productIdResult.textContent = `Product ID: ${json.productId}`;
-                quantityResult.textContent = `Quantity: ${json.quantity}`;
+
+                orderNameResult.textContent = `Order Name: ${orderInfo.name}`;
+                productIdResult.textContent = `Product ID: ${orderInfo.productid}`;
+                quantityResult.textContent = `Quantity: ${orderInfo.quantity}`;
+
+                resultInfo.append(orderNameResult);
                 resultInfo.append(productIdResult);
                 resultInfo.append(quantityResult);
                 pageContent.append(resultInfo);                          
@@ -249,7 +252,14 @@ const orderProduct = (productId) => {
             })
                 .then(response => response.json())
                 .then(json => {
-                    e.target.innerHTML = json.message
+                    e.target.innerText = json.message
+                    
+                    //redirect to localhost:8080/api/pay/{id}
+                    let a = document.createElement('a')
+                    a.href = `/api/pay/${json.id}`
+                    a.innerText = 'Pay Now'
+
+                    e.target.parentElement.append(a)
                 })
                 .catch(err => {
                     alert("Error")

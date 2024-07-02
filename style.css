@@ -84,3 +84,18 @@ form button {
     position: absolute;
     right: 0;
 }
+
+a {
+    /* text-decoration: none; */
+    color: rgb(41, 83, 235);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+    background-color: white;
+    text-align: center;
+    justify-content: center;
+    width: 50%;
+    display: flex;
+    align-items: center;
+}

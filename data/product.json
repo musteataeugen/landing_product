@@ -7,8 +7,8 @@
     "image": "/images/product.jpg",
     "tags": [ "books", "JS", "design", "learning", "education", "2018", "programming", "IT"],
     "price": {
-        "Amount": 10,
-        "Currency": "EUR"
+        "amount": 10,
+        "currency": "EUR"
               }
     },
     {
@@ -19,8 +19,8 @@
       "image": "/images/product1.jpg",
       "tags": [ "books", "JS", "design", "learning", "education", "2018", "programming", "IT"],
       "price": {
-          "Amount": 20,
-          "Currency": "EUR"
+          "amount": 20,
+          "currency": "EUR"
       }  
     },
     {
@@ -31,8 +31,8 @@
       "image": "/images/product2.webp",
       "tags": [ "books", "JS", "design", "learning", "education", "2018", "programming", "IT"],
       "price": {
-          "Amount": 30,
-          "Currency": "EUR"
+          "amount": 30,
+          "currency": "EUR"
       }
     }
 ]

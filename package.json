@@ -9,6 +9,7 @@
   "author": "Eugen M.",
   "license": "ISC",
   "dependencies": {
+    "node-fetch": "^3.3.2",
     "postgres": "^3.4.4"
   }
 }
