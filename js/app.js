@@ -44,7 +44,7 @@ const renderProduct = (index) => {
 
     let p = document.createElement('p')
     p.textContent = `Price: ${product.price_amount} ${product.price_currency}`
-    pageContent.append(p)    
+    pageContent.append(p)
 
     let nextButton = document.createElement('button')
     nextButton.classList.add('nextButton')
@@ -91,66 +91,66 @@ const renderProduct = (index) => {
     buttonOrderInfo.textContent = 'ORDER INFO'
     pageContent.append(buttonOrderInfo)
 
-//----------------------------------------------------------------
-  //HW5: rewrite the logic using DOM elements
+    //----------------------------------------------------------------
+    //HW5: rewrite the logic using DOM elements
     buttonOrderInfo.addEventListener('click', () => {
         let formresult = document.createElement('form');
-        let orderId = document.createElement('input');       
+        let orderId = document.createElement('input');
         orderId.placeholder = 'Order ID';
         formresult.append(orderId);
-      
+
         let pin = document.createElement('input');
         pin.type = 'password';
         pin.placeholder = 'Enter PIN';
-        formresult.append(pin);        
-      
+        formresult.append(pin);
+
         let submitButton = document.createElement('button');
         submitButton.textContent = 'Submit';
         formresult.append(submitButton);
 
         pageContent.append(formresult);
-      
+
         submitButton.addEventListener('click', (e) => {
-          e.preventDefault();        
-      
-          let orderIdValue = orderId.value;
-          let pinValue = pin.value;
-      
-          if (!orderIdValue || !pinValue) {
-            alert('Please fill in all fields');
-            return;
-          }
-      
-          fetch(`/api/orderinfo?order_id=${orderIdValue}&pin=${pinValue}`)
-            .then(response => response.json())
-            .then(json => {
-                
-                formresult.innerHTML = '';
+            e.preventDefault();
 
-                let orderInfo = json[0];
+            let orderIdValue = orderId.value;
+            let pinValue = pin.value;
 
-                let resultInfo = document.createElement('div');
-                resultInfo.classList.add('resultInfo');
-                let orderNameResult = document.createElement('p');
-                let productIdResult = document.createElement('p');                
-                let quantityResult = document.createElement('p');
+            if (!orderIdValue || !pinValue) {
+                alert('Please fill in all fields');
+                return;
+            }
 
-                orderNameResult.textContent = `Order Name: ${orderInfo.name}`;
-                productIdResult.textContent = `Product ID: ${orderInfo.productid}`;
-                quantityResult.textContent = `Quantity: ${orderInfo.quantity}`;
+            fetch(`/api/orderinfo?order_id=${orderIdValue}&pin=${pinValue}`)
+                .then(response => response.json())
+                .then(json => {
 
-                resultInfo.append(orderNameResult);
-                resultInfo.append(productIdResult);
-                resultInfo.append(quantityResult);
-                pageContent.append(resultInfo);                          
-            })
-            .catch(err => {
-              alert("Invalid order ID or PIN");
-            });            
+                    formresult.innerHTML = '';
+
+                    let orderInfo = json[0];
+
+                    let resultInfo = document.createElement('div');
+                    resultInfo.classList.add('resultInfo');
+                    let orderNameResult = document.createElement('p');
+                    let productIdResult = document.createElement('p');
+                    let quantityResult = document.createElement('p');
+
+                    orderNameResult.textContent = `Order Name: ${orderInfo.name}`;
+                    productIdResult.textContent = `Product ID: ${orderInfo.productid}`;
+                    quantityResult.textContent = `Quantity: ${orderInfo.quantity}`;
+
+                    resultInfo.append(orderNameResult);
+                    resultInfo.append(productIdResult);
+                    resultInfo.append(quantityResult);
+                    pageContent.append(resultInfo);
+                })
+                .catch(err => {
+                    alert("Invalid order ID or PIN");
+                });
         });
-      });
+    });
 
-      //---------------------------------------------------  
+    //---------------------------------------------------  
 }
 const orderProduct = (productId) => {
 
@@ -172,7 +172,7 @@ const orderProduct = (productId) => {
     label = document.createElement('label')
     label.textContent = 'Enter quantity'
     input.type = 'number'
-    input.defaultValue = 1  
+    input.defaultValue = 1
     input.min = 1
     input.max = 10
     input.id = 'quantity'
@@ -220,51 +220,48 @@ const orderProduct = (productId) => {
     form.append(button)
 
     button.addEventListener('click', (e) => {
-        e.preventDefault()      
+        e.preventDefault()
 
-        form.addEventListener('click', (e) => {
-            e.preventDefault()
-
-            let email = document.getElementById('orderEmail').value
-            let quantity = document.getElementById('quantity').value
-            let phone = document.getElementById('phone').value
-            let name = document.getElementById('name').value
-            let address = document.getElementById('address').value
-            let city = document.getElementById('city').value
-            let pin = document.getElementById('pin').value
-
-            if (!email || !quantity || !phone || !name || !address || !city) {
-                alert('Please fill in all fields')
-                return
-            }
-            fetch('/api/order', {
-                method: 'POST',
-                body: JSON.stringify({
-                    productId: document.getElementById('productId').value,
-                    quantity: quantity,
-                    email: email,
-                    phone: phone,
-                    name: name,
-                    address: address,
-                    city: city,
-                    pin: pin
-                })
+        let email = document.getElementById('orderEmail').value
+        let productId = document.getElementById('productId').value
+        let quantity = document.getElementById('quantity').value
+        let phone = document.getElementById('phone').value
+        let name = document.getElementById('name').value
+        let address = document.getElementById('address').value
+        let city = document.getElementById('city').value
+        let pin = document.getElementById('pin').value
+        if (!email || !productId || !quantity || !phone || !name || !address || !city || !pin) {
+            alert('Please fill in all fields')
+            return
+        }
+        fetch('/api/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                productId,
+                quantity,
+                phone,
+                name,
+                address,
+                city,
+                pin
             })
-                .then(response => response.json())
-                .then(json => {
-                    e.target.innerText = json.message
-                    
-                    //redirect to localhost:8080/api/pay/{id}
-                    let a = document.createElement('a')
-                    a.href = `/api/pay/${json.id}`
-                    a.innerText = 'Pay Now'
-
-                    e.target.parentElement.append(a)
-                })
-                .catch(err => {
-                    alert("Error")
-                })
         })
+            .then(response => response.json())
+            .then(json => {
+
+                e.target.innerText = json.message
+
+                //redirect to localhost:8080/api/pay/{id}
+                let a = document.createElement('a')
+                a.href = `/api/pay/${json.id}`
+                a.innerText = 'Pay Now'
+
+                e.target.parentElement.append(a)
+            })
     })
     pageContent.replaceChild(form, pageContent.lastElementChild)
 }

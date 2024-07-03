@@ -87,12 +87,13 @@ form button {
 
 a {
     /* text-decoration: none; */
-    color: rgb(41, 83, 235);
+    color: white;
+    background-color: rgb(35, 35, 220);
     font-size: 20px;
+    font-weight: 800;
     padding: 10px;
     border-radius: 10px;
-    margin: 10px;
-    background-color: white;
+    margin: 10px;    
     text-align: center;
     justify-content: center;
     width: 50%;
